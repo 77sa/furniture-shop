@@ -1,0 +1,32 @@
+[
+    {
+        "id": 0,
+        "name": "Wood",
+        "stock": 10
+    },
+    {
+        "id": 1,
+        "name": "Metal",
+        "stock": 12
+    },
+    {
+        "id": 2,
+        "name": "Rubber",
+        "stock": 7
+    },
+    {
+        "id": 3,
+        "name": "Glass",
+        "stock": 20
+    },
+    {
+        "id": 4,
+        "name": "Leather",
+        "stock": 5
+    },
+    {
+        "id": 5,
+        "name": "Plastic",
+        "stock": 25
+    }
+]
