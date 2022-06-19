@@ -3,16 +3,16 @@ use crate::rpc::InventoryClient;
 use serde::{Deserialize, Serialize};
 use tarpc::context;
 
-#[derive(Serialize)]
+#[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct Response {
     pub id: usize,
     pub name: String,
     pub stock: usize,
 }
 
-#[derive(Deserialize)]
-pub struct Buy {
-    id: usize,
+#[derive(Serialize, Deserialize)]
+pub struct PostBuyRequest {
+    pub id: usize,
 }
 
 pub async fn get(
@@ -54,12 +54,12 @@ pub async fn get(
 pub async fn buy(
     products: Products,
     inventory: InventoryClient,
-    json: Buy,
+    json: PostBuyRequest,
 ) -> Result<impl warp::Reply, warp::Rejection> {
     if json.id >= products.len() {
         return Ok(warp::reply::json(&"Product not found".to_owned()));
     }
-    
+
     let requires = products[json.id].requires.clone();
     let result = inventory.buy(context::current(), requires).await.unwrap();
     Ok(warp::reply::json(&result))

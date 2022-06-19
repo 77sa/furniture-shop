@@ -5,7 +5,7 @@ use warp::Filter;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let inventory = load_inventory();
+    let inventory = load_inventory("inventory.json");
 
     let rpc_inventory = inventory.clone();
     let rpc =

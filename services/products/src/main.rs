@@ -5,7 +5,7 @@ use warp::Filter;
 
 #[tokio::main]
 async fn main() {
-    let products = load_products();
+    let products = load_products("products.json");
     let inventory = rpc_client().await.unwrap();
 
     let api = api::api(products.clone(), inventory.clone());

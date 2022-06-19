@@ -49,16 +49,3 @@ pub async fn rpc_client() -> anyhow::Result<InventoryClient> {
 
     Ok(client)
 }
-// pub async fn rpc_client() -> anyhow::Result<InventoryClient> {
-//     const PORT: u16 = 12000;
-//     let server_addr = (IpAddr::V4(Ipv4Addr::UNSPECIFIED), PORT);
-
-//     let transport =
-//         tarpc::serde_transport::tcp::connect(server_addr, Json::default);
-
-//     let client =
-//         InventoryClient::new(client::Config::default(), transport.await?)
-//             .spawn();
-
-//     Ok(client)
-// }

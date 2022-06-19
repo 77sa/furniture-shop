@@ -82,3 +82,60 @@ pub async fn rpc_server(inventory: inventory::Inventory) -> anyhow::Result<()> {
     println!("RPC server started");
     Ok(())
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use crate::inventory::load_inventory;
+
+    #[tokio::test]
+    async fn it_should_get_the_inventory() {
+        let inventory = load_inventory("test.json");
+        const PORT: u16 = 12000;
+        let inventory_server = InventoryServer(
+            SocketAddr::new(IpAddr::V4(Ipv4Addr::UNSPECIFIED), PORT),
+            inventory,
+        );
+
+        let res = inventory_server.get(context::current(), Some(0)).await;
+
+        let test_res = vec![Article {
+            id: 0,
+            name: "Wood".to_owned(),
+            stock: 10,
+        }];
+
+        assert_eq!(res, test_res);
+    }
+
+    #[tokio::test]
+    async fn it_should_decrement_the_stock() {
+        let inventory = load_inventory("test.json");
+        const PORT: u16 = 12000;
+        let inventory_server = InventoryServer(
+            SocketAddr::new(IpAddr::V4(Ipv4Addr::UNSPECIFIED), PORT),
+            inventory,
+        );
+
+        let res = inventory_server.clone().buy(context::current(), vec![0, 1]).await;
+
+        assert_eq!(res, "Success".to_owned());
+
+        let res = inventory_server.get(context::current(), None).await;
+
+        let test_res = vec![
+            Article {
+                id: 0,
+                name: "Wood".to_owned(),
+                stock: 9,
+            },
+            Article {
+                id: 1,
+                name: "Metal".to_owned(),
+                stock: 11,
+            },
+        ];
+
+        assert_eq!(res, test_res);
+    }
+}

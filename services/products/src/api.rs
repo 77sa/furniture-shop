@@ -21,7 +21,7 @@ pub fn api(
         .or(buy(products, inventory))
 }
 
-fn health(
+pub fn health(
 ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
     warp::get().and(path!("health")).and_then(|| async {
         Ok::<_, warp::Rejection>(warp::reply::with_status(

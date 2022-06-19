@@ -1,0 +1,12 @@
+[
+    {
+        "id": 0,
+        "name": "Wood",
+        "stock": 10
+    },
+    {
+        "id": 1,
+        "name": "Metal",
+        "stock": 12
+    }
+]
