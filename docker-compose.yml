@@ -10,5 +10,6 @@ services:
     ports:
       - 8001:8000
     environment:
-      - DOMAIN=inventory
+      - INVENTORY_RPC=inventory
       - PORT=8000
+      

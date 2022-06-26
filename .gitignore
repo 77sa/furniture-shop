@@ -1,2 +1,5 @@
 database
 target
+*terraform*
+!terraform.tfvars
+*.pem

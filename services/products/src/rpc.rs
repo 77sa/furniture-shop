@@ -49,7 +49,7 @@ pub async fn rpc_client() -> anyhow::Result<InventoryClient> {
 }
 
 fn get_rpc_server_addr() -> String {
-    match env::var("DOMAIN") {
+    match env::var("INVENTORY_RPC") {
         Ok(domain) => domain,
         Err(_) => "0.0.0.0".to_owned()
     }
