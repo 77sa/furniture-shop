@@ -1,0 +1,14 @@
+services:
+  inventory:
+    build: ./services/inventory
+    ports:
+      - 8000:8000
+    environment:
+      - PORT=8000
+  products:
+    build: ./services/products
+    ports:
+      - 8001:8000
+    environment:
+      - DOMAIN=inventory
+      - PORT=8000

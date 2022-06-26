@@ -1,9 +1,7 @@
 use serde::{Deserialize, Serialize};
-use std::{
-    net::{IpAddr, Ipv4Addr},
-    thread,
-    time::Duration,
-};
+use std::thread;
+use std::time::Duration;
+use std::env;
 use tarpc::{client, tokio_serde::formats::Json};
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -21,12 +19,12 @@ pub trait Inventory {
 
 pub async fn rpc_client() -> anyhow::Result<InventoryClient> {
     const PORT: u16 = 12000;
-    let server_addr = (IpAddr::V4(Ipv4Addr::UNSPECIFIED), PORT);
+    let server_addr = (get_rpc_server_addr(), PORT);
 
     let transport;
     loop {
         transport = match tarpc::serde_transport::tcp::connect(
-            server_addr,
+            &server_addr,
             Json::default,
         )
         .await
@@ -48,4 +46,11 @@ pub async fn rpc_client() -> anyhow::Result<InventoryClient> {
         InventoryClient::new(client::Config::default(), transport).spawn();
 
     Ok(client)
+}
+
+fn get_rpc_server_addr() -> String {
+    match env::var("DOMAIN") {
+        Ok(domain) => domain,
+        Err(_) => "0.0.0.0".to_owned()
+    }
 }

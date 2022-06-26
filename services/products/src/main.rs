@@ -1,6 +1,7 @@
 use products::api;
 use products::products::load_products;
 use products::rpc::rpc_client;
+use std::env;
 use warp::Filter;
 
 #[tokio::main]
@@ -11,5 +12,12 @@ async fn main() {
     let api = api::api(products.clone(), inventory.clone());
     let filter = api.with(warp::log("api"));
 
-    warp::serve(filter).run(([0, 0, 0, 0], 8001)).await;
+    warp::serve(filter).run(([0, 0, 0, 0], get_port())).await;
+}
+
+fn get_port() -> u16 {
+    match env::var("PORT") {
+        Ok(port) => port.parse::<u16>().unwrap(),
+        Err(_) => 8001,
+    }
 }

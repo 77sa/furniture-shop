@@ -38,7 +38,7 @@ paths:
                     example: Internal Server Error
   /buy:
     post:
-      summary: Sell a product
+      summary: Buy a product
       requestBody:
         required: true
         content:
